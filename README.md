@@ -1,2 +1,2 @@
 # behave-dataset
-code to access BEHAVE dataset
+code to access the BEHAVE dataset
