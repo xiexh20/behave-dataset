@@ -23,7 +23,8 @@ sequences: color, depth paired with SMPL and object fits of human-object interac
 ```
 We discuss details of each folder next:
 
-**calibs**
+**calibs**: This folder stores the calibrations of Kinects.
+
 ```
 DATASET_PATH
 |--calibs           # Kinect camera intrinsics and extrinsics for different locations
@@ -33,7 +34,7 @@ DATASET_PATH
 |---intrinsics      # intrinsics of 4 kinect camera
 ```
 
-**objects**
+**objects**: This folder provides the scans of our template objects. 
 ```
 DATASET_PATH
 |--objects
@@ -45,7 +46,7 @@ DATASET_PATH
 |------object_name_fxxx.ply  # simplified object mesh 
 ```
 
-**sequences**
+**sequences**: This folder provides multi-view RGB-D images and SMPL, object registrations.
 ```
 DATASET_PATH
 |--sequences
@@ -89,6 +90,21 @@ you should be able to see this video inside `YOUR_VISUALIZE_PATH`:
 
 
 ### Licenses
+Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
+
+Please read carefully the following terms and conditions and any accompanying documentation before you download and/or use this software and associated documentation files (the "Software").
+
+The authors hereby grant you a non-exclusive, non-transferable, free of charge right to copy, modify, merge, publish, distribute, and sublicense the Software for the sole purpose of performing non-commercial scientific research, non-commercial education, or non-commercial artistic projects.
+
+Any other use, in particular any use for commercial purposes, is prohibited. This includes, without limitation, incorporation in a commercial product, use in a commercial service, or production of other artefacts for commercial purposes.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+You understand and agree that the authors are under no obligation to provide either maintenance services, update services, notices of latent defects, or corrections of defects with regard to the Software. The authors nevertheless reserve the right to update, modify, or discontinue the Software at any time.
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. You agree to **cite the BEHAVE: Dataset and Method for Tracking Human Object Interaction** paper in documents and papers that report on research using this Software.
+
+In case the images are used for publication or public presentations, you are required to <strong>blur all human faces</strong>.
 
 ### Citation
 If you use our code or data, please cite:
