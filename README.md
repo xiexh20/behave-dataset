@@ -109,7 +109,7 @@ In case the images are used for publication or public presentations, you are req
 ### Citation
 If you use our code or data, please cite:
 ```
-@inproceedings{behave,
+@inproceedings{bhatnagar22behave,
     title = {BEHAVE: Dataset and Method for Tracking Human Object Interactions},
     author={Bhatnagar, Bharat Lal and Xie, Xianghui and Petrov, Ilya and Sminchisescu, Cristian and Theobalt, Christian and Pons-Moll, Gerard},
     booktitle = {{IEEE} Conference on Computer Vision and Pattern Recognition (CVPR)},
