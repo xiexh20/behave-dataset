@@ -1,6 +1,7 @@
 """
 visualize contacts by add contact balls to the contact location
 Author: Xianghui
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 sys.path.append(os.getcwd())

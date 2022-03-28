@@ -1,6 +1,7 @@
 """
 Code to generate contact labels from SMPL and object registrations
 Author: Xianghui Xie
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 import numpy as np

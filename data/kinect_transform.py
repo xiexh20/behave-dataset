@@ -1,5 +1,7 @@
 """
 transform between different kinect cameras, sequence specific
+Author: Xianghui
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 sys.path.append(os.getcwd())

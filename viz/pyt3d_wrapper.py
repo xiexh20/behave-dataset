@@ -1,5 +1,6 @@
 """
 a simple wrapper for pytorch3d rendering
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import numpy as np
 import torch

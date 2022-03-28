@@ -1,3 +1,8 @@
+"""
+Author: Xianghui
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
+"""
+
 import numpy as np
 import cv2
 from sklearn.neighbors import KDTree

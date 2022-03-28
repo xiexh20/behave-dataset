@@ -1,6 +1,7 @@
 """
 a simple demo script to show how to load different data given a sequence path
 Author: Xianghui
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 sys.path.append(os.getcwd())

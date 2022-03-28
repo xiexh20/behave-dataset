@@ -1,6 +1,7 @@
 """
 loads more data for each frame
 Author: Xianghui
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 sys.path.append(os.getcwd())

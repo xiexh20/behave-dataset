@@ -2,6 +2,7 @@
 original kinect frame reader that only loads multi-view color and depth images
 
 author: Xianghui Xie
+Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 
 import numpy as np
