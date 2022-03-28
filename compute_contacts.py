@@ -17,7 +17,7 @@ class ContactLabelGenerator(object):
     def __init__(self):
         pass
 
-    def get_contact_labels(self, smpl, obj, num_samples, thres=0.03):
+    def get_contact_labels(self, smpl, obj, num_samples, thres=0.02):
         """
         sample point on the object surface and compute contact labels for each point
         :param smpl: trimesh object
