@@ -1,7 +1,7 @@
 # BEHAVE dataset (CVPR'22)
 [[ArXiv]](https://arxiv.org/abs/2204.06950) [[Project Page]](http://virtualhumans.mpi-inf.mpg.de/behave)
 <p align="center">
-<img src="images/teaser.jpg" alt="teaser" width="1920"/>
+<img src="images/dataset.png" alt="teaser" width="1920"/>
 </p>
 BEHAVE is a dataset for full-body human-object interactions captured in natural environments. We provide multi-view RGBD frames and corresponding 3D SMPL and object fits along with the annotated contacts between them.  
 
