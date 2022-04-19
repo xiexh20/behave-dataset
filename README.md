@@ -1,5 +1,9 @@
-# BEHAVE-dataset
-This repo provides sample code to access the BEHAVE dataset.
+# BEHAVE dataset (CVPR'22)
+[[ArXiv]](https://arxiv.org/abs/2204.06950) [[Project Page]](http://virtualhumans.mpi-inf.mpg.de/behave)
+<p align="center">
+<img src="images/teaser.jpg" alt="teaser" width="1920"/>
+</p>
+BEHAVE is a dataset for full-body human-object interactions captured in natural environments. We provide multi-view RGBD frames and corresponding 3D SMPL and object fits along with the annotated contacts between them.  
 
 ### Contents
 1. [Dependencies](#dependencies)
@@ -20,6 +24,7 @@ After unzip the dataset, you can find three subfolders: `calibs`, `objects`, `se
 calibs: Kinect camera intrinsics and extrinsics for different locations
 objects: 3D scans of the 20 objects
 sequences: color, depth paired with SMPL and object fits of human-object interaction sequences
+split.json: train and test split
 ```
 We discuss details of each folder next:
 
@@ -28,7 +33,7 @@ We discuss details of each folder next:
 ```
 DATASET_PATH
 |--calibs           # Kinect camera intrinsics and extrinsics for different locations
-|----Date[xx]       # background and camera poses for the scene in this date
+|----Date[xx]       # background and camera poses for the scene on this date
 |------background   # background image and point cloud 
 |------config       # camera poses
 |---intrinsics      # intrinsics of 4 kinect camera
@@ -67,6 +72,7 @@ DATASET_PATH
 |----------fit01                    # object registrations
 ```
 
+**split.json**: this file provides the official train and test split for the dataset. The split is based on sequence name. In total there are 231 sequences for training and 90 sequences for testing. 
 ### Example usage
 Here we describe how to generate contact labels from our released data and render one sequence. 
 
