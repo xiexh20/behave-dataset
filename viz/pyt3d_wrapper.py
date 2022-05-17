@@ -4,6 +4,7 @@ Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import numpy as np
 import torch
+import pytorch3d
 from copy import deepcopy
 # Data structures and functions for rendering
 from pytorch3d.renderer import (
@@ -92,10 +93,18 @@ class Pyt3DWrapper:
         color_w, color_h = 2048, 1536  # kinect color image size
         cam_center = torch.tensor((cx, cy), dtype=torch.float32).unsqueeze(0)
         focal_length = torch.tensor((fx, fy), dtype=torch.float32).unsqueeze(0)
-        cam = PerspectiveCameras(focal_length=focal_length, principal_point=cam_center,
-                                 image_size=((color_w, color_h),),
-                                 device=device,
-                                 R=R, T=T)
+
+        pyt3d_version = pytorch3d.__version__
+        if pyt3d_version >= '0.6.0':
+            cam = PerspectiveCameras(focal_length=focal_length, principal_point=cam_center,
+                                     image_size=((color_w, color_h),),
+                                     device=device,
+                                     R=R, T=T, in_ndc=False)
+        else:
+            cam = PerspectiveCameras(focal_length=focal_length, principal_point=cam_center,
+                                     image_size=((color_w, color_h),),
+                                     device=device,
+                                     R=R, T=T)
         return cam
 
     def render_meshes(self, meshes, viz_contact=False):
