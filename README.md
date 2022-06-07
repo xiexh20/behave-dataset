@@ -71,6 +71,7 @@ DATASET_PATH
 |----------object_name.ply          # segmented object point cloud
 |----------fit01                    # object registrations
 ```
+Note: we store the SMPL-H parameters and corresponding mesh inside each `fit02` folder. If you would like to use other body models e.g. SMPL or SMPL-X, please refer to [this repo](https://github.com/vchoutas/smplx/tree/master/transfer_model) for conversions between different body models. 
 
 **split.json**: this file provides the official train and test split for the dataset. The split is based on sequence name. In total there are 231 sequences for training and 90 sequences for testing. 
 ### Example usage
