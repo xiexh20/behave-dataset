@@ -5,12 +5,15 @@
 </p>
 BEHAVE is a dataset for full-body human-object interactions captured in natural environments. We provide multi-view RGBD frames and corresponding 3D SMPL and object fits along with the annotated contacts between them.  
 
-### Contents
+## Contents
 1. [Dependencies](#dependencies)
 2. [Dataset Structure](#dataset-structure)
 3. [Example usage](#example-usage)
+4. [License](#license)
+5. [Citation](#citation)
 
-### Dependencies
+
+## Dependencies
 This repo relies on these external libraries:
 1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation). 
 2. trimesh. `pip install trimesh`
@@ -18,7 +21,7 @@ This repo relies on these external libraries:
 4. pytorch3d. See [installation](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md). We recommend using `pytorch3d<=0.5.0`, e.g. `conda install pytorch3d==0.5.0 -c pytorch3d`.
 
 
-### Dataset Structure
+## Dataset Structure
 After unzip the dataset, you can find three subfolders: `calibs`, `objects`, `sequences`. The summary of each folder is described below:
 ```
 calibs: Kinect camera intrinsics and extrinsics for different locations
@@ -74,7 +77,9 @@ DATASET_PATH
 Note: we store the SMPL-H parameters and corresponding mesh inside each `fit02` folder. If you would like to use other body models e.g. SMPL or SMPL-X, please refer to [this repo](https://github.com/vchoutas/smplx/tree/master/transfer_model) for conversions between different body models. 
 
 **split.json**: this file provides the official train and test split for the dataset. The split is based on sequence name. In total there are 231 sequences for training and 90 sequences for testing. 
-### Example usage
+
+
+## Example usage
 Here we describe how to generate contact labels from our released data and render one sequence. 
 
 **Generate contact labels**
@@ -96,7 +101,7 @@ you should be able to see this video inside `YOUR_VISUALIZE_PATH`:
 </p>
 
 
-### Licenses
+## License
 Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
 
 Please read carefully the following terms and conditions and any accompanying documentation before you download and/or use this software and associated documentation files (the "Software").
@@ -113,15 +118,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 In case the images are used for publication or public presentations, you are required to <strong>blur all human faces</strong>.
 
-### Citation
+## Citation
 If you use our code or data, please cite:
-```
+```bibtex
 @inproceedings{bhatnagar22behave,
-    title = {BEHAVE: Dataset and Method for Tracking Human Object Interactions},
-    author={Bhatnagar, Bharat Lal and Xie, Xianghui and Petrov, Ilya and Sminchisescu, Cristian and Theobalt, Christian and Pons-Moll, Gerard},
-    booktitle = {{IEEE} Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month = {jun},
-    organization = {{IEEE}},
-    year = {2022},
+  title={Behave: Dataset and method for tracking human object interactions},
+  author={Bhatnagar, Bharat Lal and Xie, Xianghui and Petrov, Ilya A and Sminchisescu, Cristian and Theobalt, Christian and Pons-Moll, Gerard},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={15935--15946},
+  year={2022}
 }
 ```
