@@ -80,9 +80,10 @@ Note: we store the SMPL-H parameters and corresponding mesh inside each `fit02` 
 
 
 ## Example usage
-Here we describe how to generate contact labels from our released data and render one sequence. 
+Here we describe some example usages of our dataset: 
 
 **Generate contact labels**
+
 We provide sample code in `compute_contacts.py` to generate contact labels from SMPL and object registrations. Run with:
 ```
 python compute_contacts.py -s BEHAVE_PATH/sequences/TARGET_SEQ 
@@ -100,6 +101,15 @@ you should be able to see this video inside `YOUR_VISUALIZE_PATH`:
 <img src="images/demo_out.gif" alt="sample" width="1920"/>
 </p>
 
+
+**Parse object pose parameters**
+
+The object registration parameters are saved as axis angle and translation in file `[obj_name]_fit.pkl`. These parameters transform the *centered* canonical templates to the Kinect camera coordinate. We provide a simple script in `tools/parse_obj_pose.py` to show how to use these parameters:
+
+```
+python tools/parse_obj_pose.py -s [the path to a BEHAVE sequence]
+```
+after runing this, you can see the transformed meshes stored under the folder `tmp/[sequence name]`. 
 
 ## License
 Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
