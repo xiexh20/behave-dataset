@@ -2,7 +2,7 @@ chumpy==0.70
 imageio==2.9.0
 imageio-ffmpeg==0.4.3
 matplotlib
-notebook==6.3.0
+notebook
 numba==0.55.1
 numexpr
 numpy
