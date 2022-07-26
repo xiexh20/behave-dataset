@@ -19,7 +19,7 @@ from viz.pyt3d_wrapper import Pyt3DWrapper
 
 
 def main(args):
-    image_size = 640
+    image_size = 1200
     w, h = image_size, int(image_size * 0.75)
 
     # FrameDataReader is the core class for dataset reading
@@ -33,7 +33,7 @@ def main(args):
     smpl_name = args.smpl_name
     obj_name = args.obj_name
 
-    pyt3d_wrapper = Pyt3DWrapper(image_size=1200)
+    pyt3d_wrapper = Pyt3DWrapper(image_size=(w, h))
     outdir = args.viz_dir
     seq_save_path = join(outdir, reader.seq_name)
     os.makedirs(seq_save_path, exist_ok=True)

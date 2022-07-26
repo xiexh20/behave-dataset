@@ -14,11 +14,11 @@ BEHAVE is a dataset for full-body human-object interactions captured in natural 
 
 
 ## Dependencies
-This repo relies on these external libraries:
-1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation). 
-2. trimesh. `pip install trimesh`
-3. igl. `conda install -c conda-forge igl`
-4. pytorch3d. See [installation](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md). We recommend using `pytorch3d<=0.5.0`, e.g. `conda install pytorch3d==0.5.0 -c pytorch3d`.
+Most dependencies can be installed with: `pip install -r requirements.txt`
+
+Some external libraries need to be installed manually:
+1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation).
+2. igl. `conda install -c conda-forge igl`
 
 
 ## Dataset Structure
