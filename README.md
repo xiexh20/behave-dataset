@@ -98,7 +98,7 @@ python behave_demo.py -s BEHAVE_PATH/sequences/Date04_Sub05_boxlong -v YOUR_VISU
 ```
 you should be able to see this video inside `YOUR_VISUALIZE_PATH`:
 <p align="center">
-<img src="images/demo_out.gif" alt="sample" width="1920"/>
+<img src="images/demo_out.gif" alt="sample" width="100%"/>
 </p>
 
 
