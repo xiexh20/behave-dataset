@@ -14,7 +14,7 @@ BEHAVE is a dataset for full-body human-object interactions captured in natural 
 
 
 ## Dependencies
-Most dependencies can be installed with: `pip install -r requirements.txt`
+The code is tested on `python 3.7, Debian 10`, most dependencies can be installed with: `pip install -r requirements.txt`
 
 Some external libraries need to be installed manually:
 1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation).
