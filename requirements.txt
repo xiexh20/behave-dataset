@@ -20,3 +20,4 @@ tqdm
 trimesh==3.9.1
 zstd==1.5.0.4
 pytorch3d==0.4.0
+videoio

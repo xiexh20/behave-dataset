@@ -111,6 +111,18 @@ python tools/parse_obj_pose.py -s [the path to a BEHAVE sequence]
 ```
 after runing this, you can see the transformed meshes stored under the folder `tmp/[sequence name]`. 
 
+**Parse SMPL pose parameters**
+
+We use the [SMPL-H](https://mano.is.tue.mpg.de/) body model, please download the latest model(v1.2) from the [website](https://mano.is.tue.mpg.de/). To convert saved SMPL parameters to mesh, check the [example script](tools/smpl_params2mesh.py).
+
+
+**Generate images from raw videos**
+```shell
+python tools/video2images.py [path to one video] [output path] 
+```
+The provided depth images are already pixel aligned with color images. 
+
+
 ## License
 Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
 

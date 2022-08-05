@@ -78,9 +78,8 @@ def save_seq_info(seq_folder, config, intrinsic, cat,
     print("{}: {}, {}, {}, {}, {}".format(seq_folder, config, intrinsic, cat, beta, gender))
 
 
-"""
-example: 
-"""
+
+
 if __name__ == '__main__':
 
     from argparse import ArgumentParser

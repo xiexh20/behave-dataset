@@ -7,6 +7,7 @@ sys.path.append("/")
 import json
 from os.path import join, basename, dirname
 import numpy as np
+import cv2
 from data.kinect_calib import KinectCalib
 
 
@@ -86,3 +87,11 @@ def availabe_kindata(input_video, kinect_count=3):
         else:
             print("Warning: {} does not exist in this folder!".format(file))
     return kids, comb
+
+
+def save_color_depth(out_dir, color, depth, kid, color_only=False, ext='jpg'):
+    color_file = join(out_dir, f'k{kid}.color.{ext}')
+    cv2.imwrite(color_file, color[:, :, ::-1])
+    if not color_only:
+        depth_file = join(out_dir, f'k{kid}.depth.png')
+        cv2.imwrite(depth_file, depth)
