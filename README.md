@@ -120,7 +120,7 @@ We use the [SMPL-H](https://mano.is.tue.mpg.de/) body model, please download the
 ```shell
 python tools/video2images.py [path to one video] [output path] 
 ```
-The provided depth images are already pixel aligned with color images. 
+The provided depth images are already pixel aligned with color images, i.e. depth images have the same resolution as color images. 
 
 
 ## License
