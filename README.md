@@ -12,6 +12,8 @@ BEHAVE is a dataset for full-body human-object interactions captured in natural 
 4. [License](#license)
 5. [Citation](#citation)
 
+Code for BEHAVE model can be accesed here: https://github.com/bharat-b7/BEHAVE
+
 
 ## Dependencies
 The code is tested on `python 3.7, Debian 10`, most dependencies can be installed with: `pip install -r requirements.txt`
