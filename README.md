@@ -89,7 +89,7 @@ Note: we store the SMPL-H parameters and corresponding mesh inside each `fit02` 
 ## Example usage
 Here we describe some example usages of our dataset: 
 
-###Generate contact labels
+### Generate contact labels
 
 We provide sample code in `compute_contacts.py` to generate contact labels from SMPL and object registrations. Run with:
 ```
@@ -97,7 +97,7 @@ python compute_contacts.py -s BEHAVE_PATH/sequences/TARGET_SEQ
 ```
 It samples 10k points on the object surface and compute binary contact label, and the correspondence SMPL vertices for each point. The result is saved as an `npz` file in the same folder of object registration results. 
 
-###Visualize GT data
+### Visualize GT data
 
 We provide example code in `behave_demo.py` that shows how to access different annotations provided in our dataset. It also renders the SMPL and object registration of a given sequence. Once you have the dataset and dependencies ready, run:
 ```
@@ -109,7 +109,7 @@ you should be able to see this video inside `YOUR_VISUALIZE_PATH`:
 </p>
 
 
-###Parse object pose parameters
+### Parse object pose parameters
 
 The object registration parameters are saved as axis angle and translation in file `[obj_name]_fit.pkl`. These parameters transform the *centered* canonical templates to the Kinect camera coordinate. We provide a simple script in `tools/parse_obj_pose.py` to show how to use these parameters:
 
@@ -118,12 +118,12 @@ python tools/parse_obj_pose.py -s [the path to a BEHAVE sequence]
 ```
 after runing this, you can see the transformed meshes stored under the folder `tmp/[sequence name]`. 
 
-###Parse SMPL pose parameters
+### Parse SMPL pose parameters
 
 We use the [SMPL-H](https://mano.is.tue.mpg.de/) body model, please download the latest model(v1.2) from the [website](https://mano.is.tue.mpg.de/). To convert saved SMPL parameters to mesh, check the [example script](tools/smpl_params2mesh.py).
 
 
-###Generate images from raw videos
+### Generate images from raw videos
 ```shell
 python tools/video2images.py [path to one video] [output path] 
 ```
