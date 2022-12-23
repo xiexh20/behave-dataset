@@ -43,7 +43,7 @@ simplified_mesh = {
 
 
 def main(args):
-    reader = FrameDataReader(args.seq_folder)
+    reader = FrameDataReader(args.seq_folder, check_image=False)
     category = reader.seq_info.get_obj_name(True)
 
     temp_simp, temp_full = Mesh(), Mesh()
@@ -57,7 +57,8 @@ def main(args):
     temp_simp.v -= center
     temp_full.v -= center
 
-    frames = np.random.choice(range(0, len(reader)), 5, replace=False)
+    # frames = np.random.choice(range(0, len(reader)), 5, replace=False)
+    frames = [0, 1, 2, 3]
     outfolder = osp.join(f'tmp/{reader.seq_name}')
     os.makedirs(outfolder, exist_ok=True)
     for idx in frames:
@@ -78,6 +79,7 @@ def main(args):
         obj_fit.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_fit.ply'))
         temp_full_transformed.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_full_transformed.ply'))
         temp_simp_transformed.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_simp_transformed.ply'))
+        assert np.sum((obj_fit.v-temp_simp_transformed.v)**2) < 1e-8
     print(f'files saved to tmp/{reader.seq_name}')
     print('all done')
 

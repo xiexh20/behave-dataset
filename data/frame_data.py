@@ -156,21 +156,36 @@ class FrameDataReader(KinectFrameReader):
         return J2d
 
     def get_mask(self, idx, kid, cat='person', ret_bool=True):
-        if cat=='person':
-            file = join(self.get_frame_folder(idx), f'k{kid}.person_mask.{self.ext}')
-            # print(file)
-        elif cat == 'obj':
-            file = join(self.get_frame_folder(idx), f'k{kid}.obj_rend_mask.jpg')
-            if not isfile(file):
-                file = join(self.get_frame_folder(idx), f'k{kid}.obj_mask.{self.ext}')
-        else:
-            raise NotImplemented
+        file = self.get_mask_file(idx, kid, cat)
         if not isfile(file):
             return None
         mask = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
+        if mask is None:
+            print(f'mask file: {file} invalid! removing it...')
+            os.system(f'rm {file}')
+            raise ValueError()
         if ret_bool:
             mask = mask > 127
         return mask
+
+    def get_mask_file(self, idx, kid, cat):
+        if cat == 'person':
+            file = join(self.get_frame_folder(idx), f'k{kid}.person_mask.png')
+            if not isfile(file):
+                file = join(self.get_frame_folder(idx), f'k{kid}.person_mask.jpg')
+            # file = join(self.get_frame_folder(idx), f'k{kid}.person_mask.{self.ext}')
+            # print(file)
+        elif cat == 'obj':
+            exts = ['png', 'jpg']
+            for ext in exts:
+                file = join(self.get_frame_folder(idx), f'k{kid}.obj_rend_mask.{ext}')
+                if not isfile(file):
+                    file = join(self.get_frame_folder(idx), f'k{kid}.obj_mask.{ext}')
+                if isfile(file):
+                    break
+        else:
+            raise NotImplemented
+        return file
 
     def get_person_mask(self, idx, kids, ret_bool=True):
         frame_folder = join(self.seq_path, self.frames[idx])

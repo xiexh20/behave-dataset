@@ -5,9 +5,10 @@ Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 import os, sys
 sys.path.append("/")
 import json
-from os.path import join, basename, dirname
+from os.path import join, basename, dirname, isfile
 import numpy as np
 import cv2
+from PIL import Image
 from data.kinect_calib import KinectCalib
 
 
@@ -91,7 +92,73 @@ def availabe_kindata(input_video, kinect_count=3):
 
 def save_color_depth(out_dir, color, depth, kid, color_only=False, ext='jpg'):
     color_file = join(out_dir, f'k{kid}.color.{ext}')
-    cv2.imwrite(color_file, color[:, :, ::-1])
+    # cv2.imwrite(color_file, color[:, :, ::-1])
+    Image.fromarray(color).save(color_file)
     if not color_only:
         depth_file = join(out_dir, f'k{kid}.depth.png')
         cv2.imwrite(depth_file, depth)
+
+# path to the simplified mesh used for registration
+_mesh_template = {
+    "backpack":"backpack/backpack_f1000.ply",
+    'basketball':"basketball/basketball_f1000.ply",
+    'boxlarge':"boxlarge/boxlarge_f1000.ply",
+    'boxtiny':"boxtiny/boxtiny_f1000.ply",
+    'boxlong':"boxlong/boxlong_f1000.ply",
+    'boxsmall':"boxsmall/boxsmall_f1000.ply",
+    'boxmedium':"boxmedium/boxmedium_f1000.ply",
+    'chairblack': "chairblack/chairblack_f2500.ply",
+    'chairwood': "chairwood/chairwood_f2500.ply",
+    'monitor': "monitor/monitor_closed_f1000.ply",
+    'keyboard':"keyboard/keyboard_f1000.ply",
+    'plasticcontainer':"plasticcontainer/plasticcontainer_f1000.ply",
+    'stool':"stool/stool_f1000.ply",
+    'tablesquare':"tablesquare/tablesquare_f2000.ply",
+    'toolbox':"toolbox/toolbox_f1000.ply",
+    "suitcase":"suitcase/suitcase_f1000.ply",
+    'tablesmall':"tablesmall/tablesmall_f1000.ply",
+    'yogamat': "yogamat/yogamat_f1000.ply",
+    'yogaball':"yogaball/yogaball_f1000.ply",
+    'trashbin':"trashbin/trashbin_f1000.ply",
+}
+
+def get_template_path(behave_path, obj_name):
+    path = join(behave_path, "objects", _mesh_template[obj_name])
+    if not isfile(path):
+        print(path, 'does not exist, please check input parameters!')
+        raise ValueError()
+    return path
+
+
+def load_scan_centered(scan_path, cent=True):
+    """load a scan and centered it around origin"""
+    from psbody.mesh import Mesh
+    scan = Mesh()
+    # print(scan_path)
+    scan.load_from_file(scan_path)
+    if cent:
+        center = np.mean(scan.v, axis=0)
+        verts_centerd = scan.v - center
+        scan.v = verts_centerd
+
+    return scan
+
+
+def load_template(obj_name, cent=True, dataset_path=None):
+    assert dataset_path is not None, 'please specify BEHAVE dataset path!'
+    temp_path = get_template_path(dataset_path, obj_name)
+    return load_scan_centered(temp_path, cent)
+
+def write_pointcloud(filename,xyz_points,rgb_points=None):
+    """
+    updated on March 22, use trimesh for writing
+    """
+    import trimesh
+    assert xyz_points.shape[1] == 3,'Input XYZ points should be Nx3 float array'
+    if rgb_points is None:
+        rgb_points = np.ones(xyz_points.shape).astype(np.uint8)*255
+    assert xyz_points.shape == rgb_points.shape,'Input RGB colors should be Nx3 float array and have same size as input XYZ points'
+    outfolder = dirname(filename)
+    os.makedirs(outfolder, exist_ok=True)
+    pc = trimesh.points.PointCloud(xyz_points, rgb_points)
+    pc.export(filename)
