@@ -14,6 +14,7 @@ BEHAVE is a dataset for full-body human-object interactions captured in natural 
    - [Parse object pose parameters](#parse-object-pose-parameters)
    - [Parse SMPL pose parameters](#parse-smpl-pose-parameters)
    - [Generate images from raw videos](#generate-images-from-raw-videos) 
+   - [Generate point clouds from RGBD images](#generate-point-clouds-from-RGBD-images)
 4. [License](#license)
 5. [Citation](#citation)
 
@@ -129,6 +130,11 @@ python tools/video2images.py [path to one video] [output path]
 ```
 The provided depth images are already pixel aligned with color images, i.e. depth images have the same resolution as color images. 
 
+### Generate point clouds from RGBD images
+```shell
+python tools/rgbd2pclouds.py BEHAVE_SEQ_ROOT/Date05_Sub05_chairwood -t obj
+```
+By default, the generated point clouds will be saved to the same directory of the provided sequence path. 
 
 ## License
 Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
