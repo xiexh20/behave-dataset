@@ -79,7 +79,7 @@ class VideoController:
         """
         return the frame index of the closest frame
         """
-        if time < self.start_time()-0.2 or time > self.end_time():
+        if time < self.start_time()-0.3 or time > self.end_time():
             print(f'given timestamp invalid for start time: {self.start_time()}, end time: {self.end_time()}')
             return None
         time_diff = np.abs(frame_times - time)
