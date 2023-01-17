@@ -130,6 +130,8 @@ python tools/video2images.py [path to one video] [output path]
 ```
 The provided depth images are already pixel aligned with color images, i.e. depth images have the same resolution as color images. 
 
+We also release the registrations for all the frames, which you can find download links in [our website](https://virtualhumans.mpi-inf.mpg.de/behave/). Note that NOT all frames have registrations aligned with RGBD images. Some frames are too difficult to obtain accurate registrations hence we discard them or split one sequence into two. You can find the correspondence from each parameter to RGBD images by the `frame_times` information stored in each `npz` file (30fps annotations files). 
+
 ### Generate point clouds from RGBD images
 ```shell
 python tools/rgbd2pclouds.py BEHAVE_SEQ_ROOT/Date05_Sub05_chairwood -t obj
