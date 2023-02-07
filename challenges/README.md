@@ -85,10 +85,14 @@ To run the code, you need to pack your results as described above and organize t
 DATA_ROOT
 --ref
 ----ref.pkl
+----SMPLH_female.pkl
+----SMPLH_male.pkl
 --res
 ----results.pkl 
 ```
-where `ref.pkl` is the ground truth data which you can download [here](https://datasets.d2.mpi-inf.mpg.de/cvpr22behave/cvprw23/ref.pkl).
+where `ref.pkl` is the ground truth data which you can download [here](https://datasets.d2.mpi-inf.mpg.de/cvpr22behave/cvprw23/ref.pkl). 
+
+`SMPLH_*.pkl` are the SMPLH body model files that can be downloaded from the [MANO](https://mano.is.tue.mpg.de/index.html) website. We use MANO version v1.2. 
 
 With that data structure, you can run evaluation code as:
 ```bash
