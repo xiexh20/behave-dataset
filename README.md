@@ -22,11 +22,16 @@ Code for BEHAVE model can be accesed here: https://github.com/bharat-b7/BEHAVE
 
 
 ## Dependencies
-The code is tested on `python 3.7, Debian 10`, most dependencies can be installed with: `pip install -r requirements.txt`
+The code is tested on `python 3.7, Debian 10`.
+
+To start with, create a conda environment: `conda create -n behave python=3.7`, and then `conda activate behave`
+
+Most dependencies can be installed with: `pip install -r requirements.txt`
 
 Some external libraries need to be installed manually:
 1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation).
 2. igl. `conda install -c conda-forge igl`
+3. pytorch3d: `conda install -c fvcore -c iopath -c conda-forge fvcore iopath`, and then `conda install -c pytorch3d pytorch3d`. 
 
 
 ## Dataset Structure
