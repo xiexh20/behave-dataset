@@ -16,10 +16,10 @@ from tqdm import tqdm
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from evaluate_base import BaseEvaluator
-import misc
-import pose_error
-import config
+from challenges.lib.evaluate_base import BaseEvaluator
+from challenges.lib import pose_error, misc, config
+
+
 # from config import BEHAVE_CAM_K
 
 
@@ -110,7 +110,7 @@ class ObjectEvaluator(BaseEvaluator):
                 pidx = frames_pred.index(frame)  # find the recon index and get the data
                 ov_est = overts_pred[pidx]
 
-                errors_mssd.append(pose_error.mssd_verts(ov_est, rot_gt[idx], trans_gt[idx], overts, symms)*self.m2mm)
+                errors_mssd.append(pose_error.mssd_verts(ov_est, rot_gt[idx], trans_gt[idx], overts, symms) * self.m2mm)
                 errors_mspd.append(pose_error.mspd_verts(ov_est, rot_gt[idx], trans_gt[idx], cam_K, overts, symms))
                 errors_re.append(pose_error.re_symm(rot_est[pidx], rot_gt[idx], symms))
                 diameters.append(diameter*self.m2mm)

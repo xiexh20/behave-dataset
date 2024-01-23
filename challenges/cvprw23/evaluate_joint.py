@@ -9,12 +9,11 @@ import time
 sys.path.append(os.getcwd())
 import numpy as np
 import trimesh
-from scipy.spatial.transform import Rotation
 from tqdm import tqdm
 
 from evaluate_human import HumanEvaluator
-import metrics as metric
-from chamfer_distance import chamfer_distance
+from challenges.lib import metrics as metric
+from challenges.lib.chamfer_distance import chamfer_distance
 
 
 class JointReconEvaluator(HumanEvaluator):

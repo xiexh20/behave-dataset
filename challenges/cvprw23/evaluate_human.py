@@ -6,9 +6,9 @@ Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 import sys, os
 sys.path.append(os.getcwd())
 import numpy as np
-from evaluate_base import BaseEvaluator
-import metrics as metric
-from SMPL import SMPL
+from challenges.lib.evaluate_base import BaseEvaluator
+from challenges.lib import metrics as metric
+from challenges.lib.SMPL import SMPL
 
 # dirs = ['', '../', '../../', "program"]
 # for d in dirs:
