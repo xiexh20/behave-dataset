@@ -159,7 +159,7 @@ class ColorDepthController:
         return max(self.depth_reader.start_time(), self.color_reader.start_time())
 
     def end_time(self):
-        return min(self.depth_reader.start_time(), self.color_reader.start_time())
+        return min(self.depth_reader.end_time(), self.color_reader.end_time())
 
     def get_closest_time(self, time):
         return self.depth_reader.get_closest_time(time)
