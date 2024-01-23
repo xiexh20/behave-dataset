@@ -21,19 +21,11 @@ class VideoController:
         :param video_path: *.[kinect id].[color|depth-reg].mp4
         :param pre_load: load all video data into memory or not, suitable if run in server
         """
-        assert '.depth-reg.mp4' in video_path or '.color.mp4' in video_path, 'the given path is not valid: {}'.format(video_path)
-        self.video_path = video_path
-        if '.depth-reg.mp4' in video_path:
-            self.video_type = 'depth'
-            self.time_file = video_path.replace('.depth-reg.mp4', '.time.json')
-        else:
-            self.video_type = 'color'
-            self.time_file = video_path.replace('.color.mp4', '.time.json')
-
-        self.frame_times = np.array(json.load(open(self.time_file))[self.video_type], dtype=float)/1e6
-        self.kinect_id = int(osp.basename(video_path).split('.')[1])
+        self.prepare_paths(video_path)
         assert self.kinect_id in [0, 1, 2, 3], 'invalid kinect id encounted: {}'.format(self.kinect_id)
 
+        self.frame_times = np.array(json.load(open(self.time_file))[self.video_type], dtype=float)/1e6
+        
         if not time_only:
             # load video as well
             self.pre_load = pre_load
@@ -58,6 +50,21 @@ class VideoController:
         # data buffer
         self.cached_frame = None
         self.current_frame = 0
+
+    def prepare_paths(self, video_path):
+        """
+        prepare video and timestamp file paths. 
+        """
+        assert '.depth-reg.mp4' in video_path or '.color.mp4' in video_path, 'the given path is not valid: {}'.format(video_path)
+        self.video_path = video_path
+        if '.depth-reg.mp4' in video_path:
+            self.video_type = 'depth'
+            self.time_file = video_path.replace('.depth-reg.mp4', '.time.json')
+        else:
+            self.video_type = 'color'
+            self.time_file = video_path.replace('.color.mp4', '.time.json')
+        self.kinect_id = int(osp.basename(video_path).split('.')[1])
+        
 
     def start_time(self):
         return self.frame_times[0]
@@ -119,6 +126,15 @@ class VideoController:
     def close(self):
         if self.reader is not None:
             self.reader.close()
+
+class VideoControllerV2(VideoController):
+    def prepare_paths(self, video_path):
+        "different path patterns: color/*.mp4, depth/*.mp4, times/*.json"
+        self.video_path = video_path
+        self.video_type = osp.basename(osp.dirname(self.video_path))
+        self.time_file = self.video_path.replace(self.video_type, 'times').replace(".mp4", ".json")
+        # return super().prepare_paths(video_path)
+        self.kinect_id = int(osp.basename(self.video_path).split("_")[0]) -1 
 
 
 class ColorDepthController:

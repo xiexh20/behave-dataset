@@ -149,6 +149,13 @@ def load_template(obj_name, cent=True, dataset_path=None):
     temp_path = get_template_path(dataset_path, obj_name)
     return load_scan_centered(temp_path, cent)
 
+def load_template_orig(obj_name, dataset_path=None):
+    from psbody.mesh import Mesh
+    path = join(dataset_path, 'objects', f'{obj_name}/{obj_name}.obj')
+    m = Mesh()
+    m.load_from_obj(path)
+    return m
+
 def write_pointcloud(filename,xyz_points,rgb_points=None):
     """
     updated on March 22, use trimesh for writing

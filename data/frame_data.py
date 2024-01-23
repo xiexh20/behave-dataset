@@ -73,6 +73,13 @@ class FrameDataReader(KinectFrameReader):
         params = json.load(open(jsonfile))
         return np.array(params['betas'])
 
+    def get_mocap_params(self, idx, kid=1):
+        jsonfile = join(self.get_frame_folder(idx), 'k{}.mocap.json'.format(kid))
+        if not isfile(jsonfile):
+            return None, None
+        params = json.load(open(jsonfile))
+        return np.array(params['pose']), np.array(params['betas'])
+
     def get_smplfit(self, idx, save_name, ext='ply'):
         if save_name is None:
             return None
