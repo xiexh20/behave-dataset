@@ -13,7 +13,7 @@ import numpy as np
 from scipy.spatial import distance
 
 # from bop_toolkit_lib import transform
-import transform
+from . import transform
 
 
 def log(s):

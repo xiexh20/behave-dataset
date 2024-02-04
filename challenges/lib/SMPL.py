@@ -7,8 +7,8 @@ import numpy as np
 
 import pickle as pkl
 
-from utils import  with_zeros, pack, subtract_flat_id
-from utils import axan_to_rot_matrix, rot_matrix_to_axan
+from .utils import with_zeros, pack, subtract_flat_id
+from .utils import axan_to_rot_matrix, rot_matrix_to_axan
 
 
 class SMPL(object):

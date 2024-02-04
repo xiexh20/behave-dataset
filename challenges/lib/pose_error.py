@@ -12,8 +12,8 @@ from scipy import spatial
 
 # from bop_toolkit_lib import misc # dependency: misc and a transform lib
 # from bop_toolkit_lib import visibility # dependency: numpy
-import misc
-import visibility
+from . import misc
+from . import visibility
 
 
 def vsd(R_est, t_est, R_gt, t_gt, depth_test, K, delta, taus,

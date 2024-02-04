@@ -74,9 +74,15 @@ class BaseEvaluator:
     def smpl2smplh_pose(self, poses):
         """add SMPLH hand pose to the SMPL pose"""
         assert poses.shape[-1] == 72, f'given pose shape {poses.shape} is not SMPL pose'
-        p = np.zeros((poses.shape[0], 156))
-        p[:, :69] = poses[:, :69]
-        p[:, 111:114] = poses[:, 69:]
+        if len(poses.shape) > 1:
+            p = np.zeros((poses.shape[0], 156))
+            p[:, :69] = poses[:, :69]
+            p[:, 111:114] = poses[:, 69:]
+
+        else:
+            p = np.zeros((156, ))
+            p[:69] = poses[:69]
+            p[111:114] = poses[69:]
         poses = p
         return poses
 
