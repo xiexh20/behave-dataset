@@ -18,7 +18,7 @@ The annotation file stores a dict of the following:
 The object template meshes are packed in [this file](https://datasets.d2.mpi-inf.mpg.de/cvpr22behave/cvprw24/ref_hoi.zip), 
 which can be indexed via `data['templates'][<obj_name>]`.
 
-### Date format for video based HOI tracking task
+### Data format for video based HOI tracking task
 The full dataset is also split into train, val and test. Each video is also identified with a unique id.
 ```bash
 |--train
