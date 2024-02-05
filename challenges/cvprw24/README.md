@@ -1,5 +1,5 @@
-# 2n RHOBIN Challenges
-  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/17571) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/17524) | [Joint recon](https://codalab.lisn.upsaclay.fr/competitions/17522) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/17572)
+# 2nd RHOBIN Challenges
+  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/17571) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/17524) | [Joint recon](https://codalab.lisn.upsaclay.fr/competitions/17522) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/17572) | [Contact estimation](https://codalab.lisn.upsaclay.fr/competitions/17561)
 
 
 This folder provides the evaluation code for the 2nd Rhobin Challenges held in conjunction with the [CVPR'24 workshop](https://rhobin-challenge.github.io/). 
@@ -26,7 +26,7 @@ Similarly, methods estimating 3D contacts have also seen rapid progress, but are
 - Joint tracking of human and object from monocular RGB video | [website](https://codalab.lisn.upsaclay.fr/competitions/17572). 
 - Estimating contacts from single RGB image | [website](https://codalab.lisn.upsaclay.fr/competitions/17561). 
 
-- The winner of each track will be invited to give a talk in our CVPR'24 Rhobin workshop. 
+The winner of each track will be invited to give a talk in our CVPR'24 Rhobin workshop. 
 
 ## About the data
 We use BEHAVE and InterCap for the first four tasks. For convenience, we process and pack the files into tar files. For download links, please refer to their challenge webpages.  
