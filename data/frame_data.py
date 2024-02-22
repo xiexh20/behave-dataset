@@ -6,13 +6,14 @@ Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 import sys, os
 sys.path.append(os.getcwd())
 from os.path import join, isfile
-from psbody.mesh import Mesh
+
 import json
 import cv2
 import numpy as np
 import pickle as pkl
 from data.sync_frame import KinectFrameReader
 from data.seq_utils import SeqInfo
+from data.const import USE_PSBODY
 
 
 class FrameDataReader(KinectFrameReader):
@@ -41,8 +42,14 @@ class FrameDataReader(KinectFrameReader):
     def load_mesh(self, pcfile):
         if not isfile(pcfile):
             return None
-        m = Mesh()
-        m.load_from_file(pcfile)
+        if USE_PSBODY:
+            from psbody.mesh import Mesh
+            m = Mesh()
+            m.load_from_file(pcfile)
+        else:
+            # use trimesh
+            import trimesh
+            m = trimesh.load_mesh(pcfile, process=False)
         return m
 
     def get_J3d(self, idx):

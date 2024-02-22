@@ -5,8 +5,7 @@ Cite: BEHAVE: Dataset and Method for Tracking Human Object Interaction
 """
 import sys, os
 sys.path.append(os.getcwd())
-from psbody.mesh import Mesh
-from psbody.mesh.sphere import Sphere
+# from psbody.mesh import Mesh
 from scipy.spatial import KDTree
 import trimesh
 import numpy as np
@@ -52,9 +51,16 @@ class ContactVisualizer:
             colors[i] = part_colors[color_reorder[i]]
         return colors
 
-    def get_contact_spheres(self, smpl:Mesh, obj:Mesh):
-        kdtree = KDTree(smpl.v)
-        obj_tri = trimesh.Trimesh(obj.v, obj.f, process=False)
+    def get_contact_spheres(self, smpl, obj):
+        if hasattr(smpl, 'v'):
+            import trimesh
+            # psbody meshes
+            kdtree = KDTree(smpl.v)
+            obj_tri = trimesh.Trimesh(obj.v, obj.f, process=False)
+        else:
+            kdtree = KDTree(smpl.vertices)
+            obj_tri = obj
+
         points = obj_tri.sample(10000)
         dist, idx = kdtree.query(points)  # query each object vertex's nearest neighbour
         contact_mask = dist < self.thres
@@ -70,7 +76,12 @@ class ContactVisualizer:
                 color = self.part_colors[i]
                 contact_i = contact_verts[parts_i]
                 center_i = np.mean(contact_i, 0)
-                contact_sphere = Sphere(center_i, self.radius).to_mesh()
+                if hasattr(smpl, 'v'):
+                    from psbody.mesh.sphere import Sphere
+                    contact_sphere = Sphere(center_i, self.radius).to_mesh()
+                else:
+                    import trimesh
+                    contact_sphere = trimesh.primitives.Sphere(radius=self.radius, center=center_i, mutable=True).to_mesh()
                 contact_regions[i] = (color, contact_sphere)
 
         return contact_regions

@@ -29,8 +29,8 @@ To start with, create a conda environment: `conda create -n behave python=3.7`, 
 Most dependencies can be installed with: `pip install -r requirements.txt`
 
 Some external libraries need to be installed manually:
-1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation).
-2. igl. `conda install -c conda-forge igl`
+1. psbody mesh library. See [installation](https://github.com/MPI-IS/mesh#installation). Alternatively, one can use `trimesh` library by set `USE_PSBODY=False` in `data/const.py`. 
+2. igl. `conda install -c conda-forge igl` This is used to compute contacts. 
 3. pytorch3d: `conda install -c fvcore -c iopath -c conda-forge fvcore iopath`, and then `conda install -c pytorch3d pytorch3d`. 
 
 
@@ -144,21 +144,8 @@ python tools/rgbd2pclouds.py BEHAVE_SEQ_ROOT/Date05_Sub05_chairwood -t obj
 By default, the generated point clouds will be saved to the same directory of the provided sequence path. 
 
 ## License
-Copyright (c) 2022 Bharat Lal Bhatnagar, Max-Planck-Gesellschaft
+Please read the LICENSE file carefully. 
 
-Please read carefully the following terms and conditions and any accompanying documentation before you download and/or use this software and associated documentation files (the "Software").
-
-The authors hereby grant you a non-exclusive, non-transferable, free of charge right to copy, modify, merge, publish, distribute, and sublicense the Software for the sole purpose of performing non-commercial scientific research, non-commercial education, or non-commercial artistic projects.
-
-Any other use, in particular any use for commercial purposes, is prohibited. This includes, without limitation, incorporation in a commercial product, use in a commercial service, or production of other artefacts for commercial purposes.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-You understand and agree that the authors are under no obligation to provide either maintenance services, update services, notices of latent defects, or corrections of defects with regard to the Software. The authors nevertheless reserve the right to update, modify, or discontinue the Software at any time.
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. You agree to **cite the BEHAVE: Dataset and Method for Tracking Human Object Interaction** paper in documents and papers that report on research using this Software.
-
-In case the images are used for publication or public presentations, you are required to <strong>blur all human faces</strong>.
 
 ## Citation
 If you use our code or data, please cite:

@@ -14,8 +14,11 @@ sys.path.append(os.getcwd())
 import os.path as osp
 import pickle as pkl
 from scipy.spatial.transform import Rotation
-from psbody.mesh import Mesh, MeshViewer
+# from psbody.mesh import Mesh
+import trimesh
+from trimesh import Trimesh
 from data.frame_data import FrameDataReader
+from data.const import USE_PSBODY
 
 # path to the simplified mesh used for registration
 simplified_mesh = {
@@ -46,16 +49,16 @@ def main(args):
     reader = FrameDataReader(args.seq_folder, check_image=False)
     category = reader.seq_info.get_obj_name(True)
 
-    temp_simp, temp_full = Mesh(), Mesh()
+    # temp_simp, temp_full = Mesh(), Mesh()
     name = reader.seq_info.get_obj_name()
-    # load simplified mesh template (the mesh used for registration)
-    temp_simp.load_from_file(osp.join(args.seq_folder, f"../../objects/{simplified_mesh[name]}"))
+    # load simplified mesh template (the mesh used for registration), make sure to set process=False to avoid reordering vertices
+    temp_simp: Trimesh = trimesh.load_mesh(osp.join(args.seq_folder, f"../../objects/{simplified_mesh[name]}"), process=False)
     # load full template mesh
-    temp_full.load_from_obj(osp.join(args.seq_folder, f"../../objects/{name}/{name}.obj"))
+    temp_full = trimesh.load_mesh(osp.join(args.seq_folder, f"../../objects/{name}/{name}.obj"), process=False)
     # center the meshes
-    center = np.mean(temp_simp.v, 0)
-    temp_simp.v -= center
-    temp_full.v -= center
+    center = np.mean(temp_simp.vertices, 0)
+    temp_simp.vertices -= center
+    temp_full.vertices -= center
 
     # frames = np.random.choice(range(0, len(reader)), 5, replace=False)
     frames = [0, 1, 2, 3]
@@ -69,17 +72,23 @@ def main(args):
         rot = Rotation.from_rotvec(angle).as_matrix()
 
         # transform canonical mesh to fitting
-        temp_simp_transformed = Mesh(temp_simp.v.copy(), temp_simp.f.copy())
-        temp_simp_transformed.v = np.matmul(temp_simp_transformed.v, rot.T) + trans
-        temp_full_transformed = Mesh(temp_full.v.copy(), temp_full.f.copy())
-        temp_full_transformed.v = np.matmul(temp_full_transformed.v, rot.T) + trans
+        temp_simp_transformed = Trimesh(np.array(temp_simp.vertices), np.array(temp_simp.faces), process=False)
+        temp_simp_transformed.vertices = np.matmul(temp_simp_transformed.vertices, rot.T) + trans
+        temp_full_transformed = Trimesh(np.array(temp_full.vertices), np.array(temp_full.faces), process=False)
+        temp_full_transformed.v = np.matmul(temp_full_transformed.vertices, rot.T) + trans
 
         obj_fit = reader.get_objfit(idx, args.obj_name)
 
-        obj_fit.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_fit.ply'))
-        temp_full_transformed.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_full_transformed.ply'))
-        temp_simp_transformed.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_simp_transformed.ply'))
-        assert np.sum((obj_fit.v-temp_simp_transformed.v)**2) < 1e-8
+        if USE_PSBODY:
+            obj_fit.write_ply(osp.join(outfolder, f'{reader.frame_time(idx)}_fit.ply'))
+            ov_gt = obj_fit.v
+        else:
+            # use trimesh
+            obj_fit.export(osp.join(outfolder, f'{reader.frame_time(idx)}_fit.ply'))
+            ov_gt = obj_fit.vertices
+        temp_full_transformed.export(osp.join(outfolder, f'{reader.frame_time(idx)}_full_transformed.ply'))
+        temp_simp_transformed.export(osp.join(outfolder, f'{reader.frame_time(idx)}_simp_transformed.ply'))
+        assert np.sum((ov_gt-temp_simp_transformed.vertices)**2) < 1e-8
     print(f'files saved to tmp/{reader.seq_name}')
     print('all done')
 

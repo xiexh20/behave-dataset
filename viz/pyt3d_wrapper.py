@@ -131,11 +131,21 @@ class Pyt3DWrapper:
     def prepare_render(self, meshes, colors):
         py3d_meshes = []
         for mesh, color in zip(meshes, colors):
-            vc = np.zeros_like(mesh.v)
-            vc[:, :] = color
-            text = TexturesVertex([torch.from_numpy(vc).float().to(self.device)])
-            py3d_mesh = Meshes([torch.from_numpy(mesh.v).float().to(self.device)], [torch.from_numpy(mesh.f.astype(int)).long().to(self.device)],
-                               text)
+            if hasattr(mesh, 'v'):
+                vc = np.zeros_like(mesh.v)
+                vc[:, :] = color
+                text = TexturesVertex([torch.from_numpy(vc).float().to(self.device)])
+                py3d_mesh = Meshes([torch.from_numpy(mesh.v).float().to(self.device)],
+                                   [torch.from_numpy(mesh.f.astype(int)).long().to(self.device)],
+                                   text)
+            else:
+                # trimesh object
+                vc = np.zeros_like(mesh.vertices)
+                vc[:, :] = color
+                text = TexturesVertex([torch.from_numpy(vc).float().to(self.device)])
+                py3d_mesh = Meshes([torch.from_numpy(np.array(mesh.vertices)).float().to(self.device)],
+                                   [torch.from_numpy(np.array(mesh.faces).astype(int)).long().to(self.device)],
+                                   text)
             py3d_meshes.append(py3d_mesh)
         joined = join_meshes_as_scene(py3d_meshes)
         return joined

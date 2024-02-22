@@ -8,7 +8,8 @@ sys.path.append(os.getcwd())
 import numpy as np
 from data.seq_utils import SeqInfo
 from data.utils import load_intrinsics, load_kinect_poses_back, load_kinect_poses
-from psbody.mesh import Mesh
+from data.const import USE_PSBODY
+
 
 
 class KinectTransform:
@@ -25,24 +26,37 @@ class KinectTransform:
         rot, trans = load_kinect_poses_back(self.seq_info.get_config(), self.kids)
         self.world2local_R, self.world2local_t = rot, trans
 
-    def world2color_mesh(self, mesh:Mesh, kid):
+    def world2color_mesh(self, mesh, kid):
         "world coordinate to local color coordinate, assume mesh world coordinate is in k1 color camera coordinate"
         m = self.copy_mesh(mesh)
-        m.v = np.matmul(mesh.v, self.world2local_R[kid].T) + self.world2local_t[kid]
+        if USE_PSBODY:
+            m.v = np.matmul(mesh.v, self.world2local_R[kid].T) + self.world2local_t[kid]
+        else:
+            m.vertices = np.matmul(m.vertices, self.world2local_R[kid].T) + self.world2local_t[kid]
         return m
 
-    def flip_mesh(self, mesh:Mesh):
+    def flip_mesh(self, mesh):
         "flip the mesh along x axis"
         m = self.copy_mesh(mesh)
-        m.v[:, 0] = -m.v[:, 0]
+        if USE_PSBODY:
+            m.v[:, 0] = -m.v[:, 0]
+        else:
+            m.vertices[:, 0] = - m.vertices[:, 0]
         return m
 
-    def copy_mesh(self, mesh:Mesh):
-        m = Mesh(v=mesh.v)
-        if hasattr(mesh, 'f'):
-            m.f = mesh.f.copy()
-        if hasattr(mesh, 'vc'):
-            m.vc = np.array(mesh.vc)
+    def copy_mesh(self, mesh):
+        if USE_PSBODY:
+            from psbody.mesh import Mesh
+            m = Mesh(v=mesh.v)
+            if hasattr(mesh, 'f'):
+                m.f = mesh.f.copy()
+            if hasattr(mesh, 'vc'):
+                m.vc = np.array(mesh.vc)
+        else:
+            # use trimesh
+            from trimesh import Trimesh
+            mesh: Trimesh
+            m = mesh.copy()
         return m
 
     def world2local_meshes(self, meshes, kid):
@@ -53,7 +67,10 @@ class KinectTransform:
 
     def local2world_mesh(self, mesh, kid):
         m = self.copy_mesh(mesh)
-        m.v = self.local2world(m.v, kid)
+        if USE_PSBODY:
+            m.v = self.local2world(m.v, kid)
+        else:
+            m.vertices = self.local2world(np.array(m.vertices), kid)
         return m
 
     def world2local(self, points, kid):

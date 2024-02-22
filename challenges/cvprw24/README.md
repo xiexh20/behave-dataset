@@ -126,7 +126,7 @@ Participants must pack their results into one pkl file named as results.pkl and 
 The submission portal can be found in each individual competition website. 
 
 ### Deadline
-The competition server will be closed at May 16 23:59 UTC. NO submissions will be allowed after the deadline. 
+The competition server will be closed at May 30 23:59 UTC. NO submissions will be allowed after the deadline. 
 
 ## Citations
 If you use the code or the dataset, please considerc cite:
