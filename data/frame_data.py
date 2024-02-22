@@ -111,6 +111,10 @@ class FrameDataReader(KinectFrameReader):
         name = self.seq_info.get_obj_name(convert=True)
         pkl_file = join(self.get_frame_folder(idx), name, save_name,
                          f'{name}_fit.pkl')
+        if not isfile(pkl_file):
+            name = self.seq_info.get_obj_name(convert=False)
+            pkl_file = join(self.get_frame_folder(idx), name, save_name,
+                            f'{name}_fit.pkl')
         return pkl_file
 
     def get_objfit_params(self, idx, save_name):

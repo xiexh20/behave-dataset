@@ -13,7 +13,7 @@ import cv2
 
 
 class KinectFrameReader:
-    def __init__(self, seq, empty=None, kinect_count=4, ext='jpg', check_image=True):
+    def __init__(self, seq, empty=None, kinect_count=4, ext='jpg', check_image=False):
         # prepare depth and color paths
         if seq.endswith('/'):
             seq = seq[:-1]
@@ -33,7 +33,7 @@ class KinectFrameReader:
         for frame in frames:
             frame_folder = join(self.seq_path, frame)
             if check_image:
-                if self.check_frames(frame_folder):
+                if self.check_frames(frame_folder, check_image):
                     valid_frames.append(frame)
                 # else:
                 #     print("frame {} not complete".format(frame))
@@ -43,12 +43,12 @@ class KinectFrameReader:
 
         return valid_frames
 
-    def check_frames(self, frame_folder):
+    def check_frames(self, frame_folder, check_depth=False):
         # print(self.kinect_count)
         for k in range(self.kinect_count):
             color_file = join(frame_folder, 'k{}.color.{}'.format(k, self.ext))
             depth_file = join(frame_folder, 'k{}.depth.png'.format(k))
-            if not isfile(color_file) or not isfile(depth_file):
+            if not isfile(color_file) or (check_depth and not isfile(depth_file)):
                 return False
         return True
 

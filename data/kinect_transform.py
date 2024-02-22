@@ -13,10 +13,13 @@ from psbody.mesh import Mesh
 
 class KinectTransform:
     "transform between different kinect cameras, sequence specific"
-    def __init__(self, seq, kinect_count=4):
+    def __init__(self, seq, kinect_count=4, no_intrinsics=False):
         self.seq_info = SeqInfo(seq)
         self.kids = [x for x in range(self.seq_info.kinect_count())]
-        self.intrinsics = load_intrinsics(self.seq_info.get_intrinsic(), self.kids)
+        if no_intrinsics:
+            self.intrinsics = None
+        else:
+            self.intrinsics = load_intrinsics(self.seq_info.get_intrinsic(), self.kids)
         rot, trans = load_kinect_poses(self.seq_info.get_config(), self.kids)
         self.local2world_R, self.local2world_t = rot, trans
         rot, trans = load_kinect_poses_back(self.seq_info.get_config(), self.kids)

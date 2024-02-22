@@ -31,6 +31,8 @@ def save_seq_info_data(seq):
     save_seq_info(seq, config, intrinsic, obj_name, gender, empty, beta, kids)
 
 
+
+
 def main(args):
     input_color = args.video
     kids, comb = availabe_kindata(input_color, kinect_count=4)

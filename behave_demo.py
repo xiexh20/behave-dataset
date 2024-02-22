@@ -16,6 +16,7 @@ from data.kinect_transform import KinectTransform
 
 # imports for rendering, you can replace with your own code
 from viz.pyt3d_wrapper import Pyt3DWrapper
+import pytorch3d
 
 
 def main(args):
@@ -33,7 +34,13 @@ def main(args):
     smpl_name = args.smpl_name
     obj_name = args.obj_name
 
-    pyt3d_wrapper = Pyt3DWrapper(image_size=(w, h))
+    pyt3d_version = pytorch3d.__version__
+    if pyt3d_version >= '0.6.0':
+        image_size = (h, w) # this supports rendering rectangular image
+    else:
+        print(f"Warning: using old pytorch3d version of {pyt3d_version}, we recommend using 0.6 or higher.")
+        image_size = image_size
+    pyt3d_wrapper = Pyt3DWrapper(image_size=image_size)
     outdir = args.viz_dir
     seq_save_path = join(outdir, reader.seq_name)
     os.makedirs(seq_save_path, exist_ok=True)
@@ -69,7 +76,10 @@ def main(args):
             # render mesh
             rend = pyt3d_wrapper.render_meshes(fit_meshes_local, viz_contact=args.viz_contact)
             h, w = orig.shape[:2]
+            # print(rend.shape, orig.shape)
             overlap = cv2.resize((rend*255).astype(np.uint8), (w, h))
+            mask = overlap[:, :, 0] == 255
+            overlap[mask] = orig[mask]
             cv2.putText(overlap, f'kinect {kid}', (w // 3, 30), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2)
             overlaps.append(overlap)
         comb = np.concatenate(overlaps, 1)
@@ -81,7 +91,8 @@ def main(args):
 
         # load person and object pc, return psbody.Mesh
         # convert flag is used to be compatible with detectron2 classes, in detectron2 all chairs are clasified as chair,
-        # so the chair pc is saved in subfolder chair; also all yogaball, basketball are classified as 'sports ball',
+        # so the chair pc is saved in subfolder chair but we have two chairs: chairwood and chairblack;
+        # also yogaball, basketball are classified as 'sports ball',
         # obj_pc = reader.get_pc(i, 'obj', convert=True)
         # person_pc = reader.get_pc(i, 'person')
 
