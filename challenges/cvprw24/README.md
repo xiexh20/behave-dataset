@@ -26,7 +26,10 @@ Similarly, methods estimating 3D contacts have also seen rapid progress, but are
 - Joint tracking of human and object from monocular RGB video | [website](https://codalab.lisn.upsaclay.fr/competitions/17572). 
 - Estimating contacts from single RGB image | [website](https://codalab.lisn.upsaclay.fr/competitions/17561). 
 
-The winner of each track will be invited to give a talk in our CVPR'24 Rhobin workshop. 
+The winner of each track will be invited to give a talk in our CVPR'24 Rhobin workshop.
+
+## Updates
+- March 24: update evaluation for human reconstruction task. Participants can submit either SMPL parameters or precomputed body joints and mesh vertices. We also do not evaluate joint rotation accuracy anymore. See [this issue](https://github.com/xiexh20/behave-dataset/issues/34).  
 
 ## About the data
 We use BEHAVE and InterCap for the first four tasks. For convenience, we process and pack the files into tar files. For download links, please refer to their challenge webpages.  
@@ -104,6 +107,8 @@ The data format of the file `results.pkl` should be:
         pose: np array (156,) of SMPL pose parameters, or (T, 156) for video-based task, where T is the number of frames
         betas: np array (10,) of SMPL shape parameters, or (T, 10) for video-based task
         trans: np array  (3,) of SMPL global translation parameters, or (T, 3) for video-based task
+        joints: [optional] np.float16 array (24, 4) of SMPL body joints, alternative format for human reconstruction
+        vertices: [optional] np.float16 array (6890, 4) of SMPL mesh vertices, alternative format for human reconstruction
 
         # Object results, required for object 6DoF and joint reconstruction track
         obj_rot: np array (3x3) of object rotation parameters, or (T, 3, 3) for video-based task
@@ -117,6 +122,9 @@ You can then run the evaluation with:
 python cvprw24/evaluate_<task>.py ROOT <output dir>
 ```
 where `<task>` can be `human`, `object`, `joint`, or `tracking`, depending on your specific task. 
+
+**Important note:** If you want to submit joints and vertices for the human reconstruction task, please save results as `np.float16` type. 
+This is because codalab can only accept file smaller than 300MB. This will cause a tiny error difference smaller than 0.02mm, which is negligible. See discussion in [this issue](https://github.com/xiexh20/behave-dataset/issues/34).   
 
 ## Submission
 Each participant is allowed to submit maximum 5 times per day and 100 submissions in total. 

@@ -8,6 +8,7 @@ from lib import metrics as metric
 from lib.SMPL import SMPL
 import lib.config as config
 
+
 class HumanEvaluator(BaseEvaluator):
     def __init__(self, model_root):
         super(HumanEvaluator, self).__init__()
@@ -49,10 +50,9 @@ class HumanEvaluator(BaseEvaluator):
             return
 
         # metadata = data_gt['metadata'] # a dict of imageid to gender and dataset name map
-        keys = ['pose', 'betas', 'trans']
+        keys = ['pose', 'betas', 'trans', 'joints', 'vertices'] #
         dataset_names = ['behave', 'icap', 'synz']
 
-        # gt data: {image_id: {'pose': ; 'betas':, 'trans': , }, }
         pred_all = {x:{} for x in dataset_names}
         gt_all = {x: {} for x in dataset_names}
         # categorize all images based on dataset and gender
@@ -62,12 +62,16 @@ class HumanEvaluator(BaseEvaluator):
                 continue
             dataset, gender = data_gt['annotations'][k]['meta'][:2]
             if gender not in pred_all[dataset]:
-                pred_all[dataset][gender] = {x:[] for x in ['pose', 'betas', 'trans', 'id']}
+                pred_all[dataset][gender] = {x:[] for x in ['pose', 'betas', 'trans', 'id', 'joints', 'vertices']}
             if gender not in gt_all[dataset]:
                 gt_all[dataset][gender] = {x:[] for x in ['pose', 'betas', 'trans', 'id']}
             for name in keys:
-                pred_all[dataset][gender][name].append(data_pred[k][name].flatten())
-                gt_all[dataset][gender][name].append(data_gt['annotations'][k][name].flatten())
+                if name in ['pose', 'betas', 'trans']:
+                    # gt data always uses parameters
+                    gt_all[dataset][gender][name].append(data_gt['annotations'][k][name].flatten())
+                if name in data_pred[k]:
+                    # prediction uses pose parameters or joints and vertices as well
+                    pred_all[dataset][gender][name].append(data_pred[k][name])
 
         # evaluate each dataset separately
         errors_all = {}
@@ -78,17 +82,27 @@ class HumanEvaluator(BaseEvaluator):
             for gender in ['male', 'female']:
                 if gender not in pred_all[dname]:
                     continue
-                if len(pred_all[dname][gender]['pose']) > 0:
+                if len(pred_all[dname][gender]['pose']) > 0 or len(pred_all[dname][gender]['joints']) > 0:
                     # compute GT and predicted SMPL
-                    rots_pred, jtrs_pred, vs_pr = self.smpl_forward(dname, gender, pred_all)
                     rots_gt, jtrs_gt, vs_gt = self.smpl_forward(dname, gender, gt_all)
+                    if len(pred_all[dname][gender]['pose']) > 0:
+                        # prefer to use pose parameters
+                        rots_pred, jtrs_pred, vs_pr = self.smpl_forward(dname, gender, pred_all)
+                    elif len(pred_all[dname][gender]['joints']) > 0:
+                        # use joints and vertices
+                        jtrs_pred, vs_pr = np.stack(pred_all[dname][gender]['joints'], 0), np.stack(pred_all[dname][gender]['vertices'], 0)
+                        rots_pred = np.zeros_like(rots_gt) # not using rotation anymore
+                    else:
+                        continue
 
-                    rots_gt_all.append(rots_gt)
-                    jtrs_gt_all.append(jtrs_gt)
-                    rots_pred_all.append(rots_pred)
-                    jtrs_pred_all.append(jtrs_pred)
-                    verts_pr.append(vs_pr)
-                    verts_gt.append(vs_gt)
+                    rots_gt_all.append(rots_gt.astype(float))
+                    jtrs_gt_all.append(jtrs_gt.astype(float))
+                    rots_pred_all.append(rots_pred.astype(float))
+                    jtrs_pred_all.append(jtrs_pred.astype(float))
+                    verts_pr.append(vs_pr.astype(float))
+                    verts_gt.append(vs_gt.astype(float))
+            if len(rots_gt_all) == 0:
+                continue
             rots_gt, jtrs_gt = np.concatenate(rots_gt_all, 0), np.concatenate(jtrs_gt_all, 0)
             rots_pred, jtrs_pred = np.concatenate(rots_pred_all, 0), np.concatenate(jtrs_pred_all, 0)
 
@@ -114,7 +128,7 @@ class HumanEvaluator(BaseEvaluator):
 
     def compute_smpl_errors(self, jtrs_gt, jtrs_pred, rots_gt, rots_pred, verts_gt, verts_pr):
         """
-
+        Update March24: not computing rotation errors anymore
         :param jtrs_gt: (N, J, 3)
         :param jtrs_pred: (N, J, 3)
         :param rots_gt: (N, J, 3, 3)
@@ -123,8 +137,8 @@ class HumanEvaluator(BaseEvaluator):
         :param verts_gt: (N, V_s, 3)
         :return:
         """
-        assert jtrs_gt.shape == jtrs_pred.shape, f'the given joint shape does not match: {jtrs_pred.shape}!={jtrs_gt.shape}'
-        assert rots_gt.shape == rots_pred.shape, f'the given rotation shape does not match: {rots_gt.shape}!={rots_pred.shape}'
+        assert jtrs_gt.shape == jtrs_pred.shape, f'the given joint shape does not match: pred{jtrs_pred.shape}!=gt{jtrs_gt.shape}'
+        assert rots_gt.shape == rots_pred.shape, f'the given rotation shape does not match: pred{rots_gt.shape}!=gt{rots_pred.shape}'
         # make all verts root relative
         verts_gt, verts_pr = verts_gt - jtrs_gt[:, 0:1], verts_pr - jtrs_pred[:, 0:1]
 
@@ -145,23 +159,23 @@ class HumanEvaluator(BaseEvaluator):
             err_pck_tem = metric.compute_pck(errors_pck, pck_thresh_)
             pck_aucs.append(err_pck_tem)
         auc_final = metric.compute_auc(auc_range / auc_range.max(), pck_aucs)
-        # compute orientation errors
+        # Compute orientation errors
         # Apply procrustus rotation to the global rotation matrices
-        mats_procs_exp = np.expand_dims(mat_procs, 1)
-        mats_procs_exp = np.tile(mats_procs_exp, (1, len(metric.SMPL_OR_JOINTS), 1, 1))
-        rots_pred_or = rots_pred[:, metric.SMPL_OR_JOINTS, :, :]  # apply only to selected joints
-        mats_pred_prc = np.matmul(mats_procs_exp, rots_pred_or)
-        # Compute differences between the predicted matrices after procrustes and GT matrices
-        error_rot_pa = np.degrees(metric.joint_angle_error(mats_pred_prc, rots_gt))
-        # joint angle error without alignment
-        error_rot = np.degrees(metric.joint_angle_error(rots_pred_or, rots_gt))
+        # mats_procs_exp = np.expand_dims(mat_procs, 1)
+        # mats_procs_exp = np.tile(mats_procs_exp, (1, len(metric.SMPL_OR_JOINTS), 1, 1))
+        # rots_pred_or = rots_pred[:, metric.SMPL_OR_JOINTS, :, :]  # apply only to selected joints
+        # mats_pred_prc = np.matmul(mats_procs_exp, rots_pred_or)
+        # # Compute differences between the predicted matrices after procrustes and GT matrices
+        # error_rot_pa = np.degrees(metric.joint_angle_error(mats_pred_prc, rots_gt))
+        # # Joint angle error without alignment
+        # error_rot = np.degrees(metric.joint_angle_error(rots_pred_or, rots_gt))
         err_dict = {
             "MPJPE": MPJPE_final,
             "MPJPE_PA": MPJPE_PA_final,
             # "PCK": pck_final,
             "AUC": auc_final,
-            "MPJAE": error_rot,
-            "MPJAE_PA": error_rot_pa,
+            "MPJAE": 16.2, # still save MPJAE for legacy compatibility
+            "MPJAE_PA": 16.2,
             'v2v': v2v*self.m2mm
         }
         return err_dict
