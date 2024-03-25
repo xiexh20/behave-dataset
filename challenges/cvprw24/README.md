@@ -107,8 +107,8 @@ The data format of the file `results.pkl` should be:
         pose: np array (156,) of SMPL pose parameters, or (T, 156) for video-based task, where T is the number of frames
         betas: np array (10,) of SMPL shape parameters, or (T, 10) for video-based task
         trans: np array  (3,) of SMPL global translation parameters, or (T, 3) for video-based task
-        joints: [optional] np.float16 array (24, 4) of SMPL body joints, alternative format for human reconstruction
-        vertices: [optional] np.float16 array (6890, 4) of SMPL mesh vertices, alternative format for human reconstruction
+        joints: [optional] np.float16 array (24, 3) of SMPL body joints, alternative format for human reconstruction
+        vertices: [optional] np.float16 array (6890, 3) of SMPL mesh vertices, alternative format for human reconstruction
 
         # Object results, required for object 6DoF and joint reconstruction track
         obj_rot: np array (3x3) of object rotation parameters, or (T, 3, 3) for video-based task
