@@ -61,12 +61,17 @@ class JointReconEvaluator(HumanEvaluator):
 
             # compute SMPL
             model = self.smplh_male if gender == 'male' else self.smplh_female
-            pose_pred = data_pred[k]['pose']
-            if pose_pred.shape[-1] == 72:
-                pose_pred = self.smpl2smplh_pose(pose_pred)
-            sv_pr = model.update(pose_pred[None], data_pred[k]['betas'][None], data_pred[k]['trans'][None])[0][0]
+            if 'vertices' in data_pred[k]:
+                # use precomputed SMPL vertices
+                sv_pr = data_pred[k]['vertices'].astype(float)
+            else:
+                pose_pred = data_pred[k]['pose']
+                if pose_pred.shape[-1] == 72:
+                    pose_pred = self.smpl2smplh_pose(pose_pred)
+                sv_pr = model.update(pose_pred[None], data_pred[k]['betas'][None], data_pred[k]['trans'][None])[0][0]
             sv_gt = model.update(data_gt['annotations'][k]['pose'][None], data_gt['annotations'][k]['betas'][None],
                                      data_gt['annotations'][k]['trans'].flatten()[None])[0][0]
+            assert sv_gt.shape == sv_pr.shape, f'the given SMPL shape {sv_pr.shape} does not match GT SMPL shape {sv_gt.shape}!'
             V = sv_gt.shape[0]
             # print(sv_gt.shape, ov_pr.shape, sv_pr.shape, ov_gt.shape, data_gt['annotations'][k]['pose'].shape,
             #       data_gt['annotations'][k]['betas'].shape, data_gt['annotations'][k]['trans'].shape)
