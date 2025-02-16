@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 
-def chamfer_distance(x, y, metric='l2', direction='bi'):
+def chamfer_distance(x, y, metric='l2', direction='bi', ret_intermediate=False):
     """Chamfer distance between two point clouds
 
     Parameters
@@ -30,6 +30,7 @@ def chamfer_distance(x, y, metric='l2', direction='bi'):
             sum_{x_i \in x}{\min_{y_j \in y}{||x_i-y_j||_metric}} + sum_{y_j \in y}{\min_{x_i \in x}{||x_i-y_j||_metric}}
 
         this is the squared root distance, while pytorch3d is the squared distance
+        distance y to x: (N, 1)
     """
 
     if direction == 'y_to_x':
@@ -40,6 +41,8 @@ def chamfer_distance(x, y, metric='l2', direction='bi'):
         y_nn = NearestNeighbors(n_neighbors=1, leaf_size=1, algorithm='kd_tree', metric=metric).fit(y)
         min_x_to_y = y_nn.kneighbors(x)[0]
         chamfer_dist = np.mean(min_x_to_y)
+        if ret_intermediate:
+            return chamfer_dist, min_x_to_y
     elif direction == 'bi':
         x_nn = NearestNeighbors(n_neighbors=1, leaf_size=1, algorithm='kd_tree', metric=metric).fit(x)
         min_y_to_x = x_nn.kneighbors(y)[0]
@@ -48,5 +51,27 @@ def chamfer_distance(x, y, metric='l2', direction='bi'):
         chamfer_dist = np.mean(min_y_to_x) + np.mean(min_x_to_y) # bidirectional errors are accumulated
     else:
         raise ValueError("Invalid direction type. Supported types: \'y_x\', \'x_y\', \'bi\'")
+    if ret_intermediate:
+        return chamfer_dist, min_x_to_y, min_y_to_x # return distance for recall and precision
 
     return chamfer_dist
+
+
+def compute_fscore(gt, pred, thres=0.01):
+    """
+
+    :param gt: (N, 3)
+    :param pred: (M, 3)
+    :param thres: the recall and precision threshold
+    :return:
+    """
+    chamf, d1, d2 = chamfer_distance(gt, pred, ret_intermediate=True)  #
+
+    recall = float(sum(d < thres for d in d2)) / float(len(d2))
+    precision = float(sum(d < thres for d in d1)) / float(len(d1))
+
+    if recall + precision > 0:
+        fscore = 2 * recall * precision / (recall + precision)
+    else:
+        fscore = 0
+    return fscore, chamf
