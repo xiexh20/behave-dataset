@@ -44,7 +44,7 @@ The annotation file stores a dict of the following:
     'pose': (156,) # SMPL-H body pose parameters
     'betas': (10,) # SMPL-H body shape parameters
     'trans': (3,) or (1, 3) # the SMPL-H global translation parameters
-    'gender': male/female # gender of this specific subject
+    'gender': male/female/neutral # gender of this specific subject
     'obj_angle': (3,) # axis angle representation of the object rotation, convert to 3x3 matrix: scipy.spatial.transform.Rotation.from_rotvec(a).as_matrix()
     'obj_trans': (3,) # object translation parameters
     'verts_smpl': (N_s, 3) # GT SMPL-H vertices
@@ -52,7 +52,9 @@ The annotation file stores a dict of the following:
 }
 ```
 The object template meshes are packed in [this file](https://datasets.d2.mpi-inf.mpg.de/cvpr22behave/cvprw25/ref_hoi.zip), 
-which can be indexed via `data['templates'][<obj_name>]`.
+which can be indexed via `data['templates'][<obj_name>]`. 
+
+For IMHD dataset, all subjects use neutral gender, the corresponding SMPLH model is the one used for AMASS (16 beta parameters).
 
 ### Data format for video based HOI tracking task
 The full dataset is also split into train, val and test. Each video is also identified with a unique id.
@@ -136,7 +138,7 @@ It is easy to setup and can run at more than 1k frames per seconds.
 ## Submission
 Each participant is allowed to submit maximum 10 times per day and 100 submissions in total. 
 
-Participants must pack their results into one pkl file named as results.pkl and submit it as zip file. The pkl data should be organized as described above. 
+Participants must pack their results into one pkl file named as results.pkl and submit it as a zipped zip file. The pkl data should be organized as described above. 
 
 The submission portal can be found in each individual competition website. 
 
