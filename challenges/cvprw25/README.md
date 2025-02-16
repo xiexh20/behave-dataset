@@ -1,5 +1,5 @@
 # 3rd RHOBIN Challenges
-  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/21687) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/21755) | [Joint recon (template)](https://codalab.lisn.upsaclay.fr/competitions/21752) | [Joint recon (template-free)](https://codalab.lisn.upsaclay.fr/competitions/21680) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/17572) | [Contact estimation](https://codalab.lisn.upsaclay.fr/competitions/21697)
+  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/21687) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/21755) | [Joint recon (template)](https://codalab.lisn.upsaclay.fr/competitions/21752) | [Joint recon (template-free)](https://codalab.lisn.upsaclay.fr/competitions/21680) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/21697) | [Contact estimation TBD](TBD)
 
 
 This folder provides the evaluation code for the 2nd Rhobin Challenges held in conjunction with the [CVPR'25 workshop](https://rhobin-challenge.github.io/). 
