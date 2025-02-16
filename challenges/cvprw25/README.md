@@ -1,5 +1,5 @@
 # 3rd RHOBIN Challenges
-  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/17571) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/17524) | [Joint recon (template)](https://codalab.lisn.upsaclay.fr/competitions/17522) | [Joint recon (template-free)](https://codalab.lisn.upsaclay.fr/competitions/17522) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/17572) | [Contact estimation](https://codalab.lisn.upsaclay.fr/competitions/17561)
+  [Workshop website](https://rhobin-challenge.github.io/) | [Human recon](https://codalab.lisn.upsaclay.fr/competitions/21687) | [Object 6DoF](https://codalab.lisn.upsaclay.fr/competitions/21755) | [Joint recon (template)](https://codalab.lisn.upsaclay.fr/competitions/21752) | [Joint recon (template-free)](https://codalab.lisn.upsaclay.fr/competitions/21680) | [Joint tracking](https://codalab.lisn.upsaclay.fr/competitions/17572) | [Contact estimation](https://codalab.lisn.upsaclay.fr/competitions/21697)
 
 
 This folder provides the evaluation code for the 2nd Rhobin Challenges held in conjunction with the [CVPR'25 workshop](https://rhobin-challenge.github.io/). 
@@ -20,11 +20,11 @@ We have seen promising progress in reconstructing human body mesh or estimating 
 Similarly, methods estimating 3D contacts have also seen rapid progress, but are restricted to scanned or synthetic datasets, and struggle with generalization to in-the-wild scenarios.  In this workshop, we want to examine how well the existing human and object reconstruction and contact estimation methods work under more realistic settings and more importantly, understand how they can benefit each other for accurate interaction reasoning. The recently released BEHAVE (CVPR'22), InterCap (GCPR?22) and DAMON (ICCV?23) datasets enable joint reasoning about human-object interactions in real settings and evaluating contact prediction in the wild. Based on these datasets, this competition is split into five tracks:
 
 
-- 3D human reconstruction from monocular RGB images | [website](https://codalab.lisn.upsaclay.fr/competitions/17571).
-- 6DoF object pose estimation from monocular RGB images | [website](https://codalab.lisn.upsaclay.fr/competitions/17524).
-- Joint human and object reconstruction from monocular RGB images (**template based**) | [website](https://codalab.lisn.upsaclay.fr/competitions/17522).
-- Joint human and object reconstruction from monocular RGB images (**template free**) | [website](https://codalab.lisn.upsaclay.fr/competitions/17522).
-- Joint tracking of human and object from monocular RGB video | [website](https://codalab.lisn.upsaclay.fr/competitions/17572). 
+- 3D human reconstruction from monocular RGB images | [website](https://codalab.lisn.upsaclay.fr/competitions/21687).
+- 6DoF object pose estimation from monocular RGB images | [website](https://codalab.lisn.upsaclay.fr/competitions/21755).
+- Joint human and object reconstruction from monocular RGB images (**template based**) | [website](https://codalab.lisn.upsaclay.fr/competitions/21752).
+- Joint human and object reconstruction from monocular RGB images (**template free**) | [website](https://codalab.lisn.upsaclay.fr/competitions/21680).
+- Joint tracking of human and object from monocular RGB video | [website](https://codalab.lisn.upsaclay.fr/competitions/21697). 
 - Estimating contacts from single RGB image | [TBD]. 
 
 The winner of each track will be invited to give a talk in our CVPR'25 Rhobin workshop.
